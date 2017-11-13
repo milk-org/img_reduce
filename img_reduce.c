@@ -115,7 +115,7 @@ int_fast8_t IMG_REDUCE_cleanbadpix_fast_cli()
 void __attribute__ ((constructor)) libinit_img_reduce()
 {
 	init_img_reduce();
-	printf(" ...... Loading module %s\n", __FILE__);
+//	printf(" ...... Loading module %s\n", __FILE__);
 }
 
 
