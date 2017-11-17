@@ -123,7 +123,7 @@ int_fast8_t init_img_reduce()
 {
 
   strcpy(data.module[data.NBmodule].name, __FILE__);
-  strcpy(data.module[data.NBmodule].info, "image analysis for astronomy: basic routines");
+  strcpy(data.module[data.NBmodule].info, "milk    - Image analysis for astronomy: basic routines");
   data.NBmodule++;
 
 
