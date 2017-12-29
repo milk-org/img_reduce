@@ -115,24 +115,12 @@ int_fast8_t IMG_REDUCE_cleanbadpix_fast_cli()
 void __attribute__ ((constructor)) libinit_img_reduce()
 {
 	init_img_reduce();
-
-	if(data.progStatus>0)
-	{
-		printf("  Found unloaded shared object in ./libs/ -> LOADING module %s\n", __FILE__);
-		fflush(stdout);
-	}	
+	RegisterModule(__FILE__, "milk", "Image analysis for astronomy: basic routines");
 }
 
 
 int_fast8_t init_img_reduce()
 {
-
-  strcpy(data.module[data.NBmodule].name, __FILE__);
-  strcpy(data.module[data.NBmodule].package, "milk");
-  strcpy(data.module[data.NBmodule].info, "Image analysis for astronomy: basic routines");
-  data.NBmodule++;
-
-
   strcpy(data.cmd[data.NBcmd].key,"rmbadpixfast");
   strcpy(data.cmd[data.NBcmd].module,__FILE__);
   data.cmd[data.NBcmd].fp = IMG_REDUCE_cleanbadpix_fast_cli;
