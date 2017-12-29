@@ -66,6 +66,8 @@ long *badpixclean_indexlist;
 
 extern DATA data;
 
+static int INITSTATUS_img_reduce = 0;
+
 
 // CLI commands
 //
@@ -114,8 +116,12 @@ int_fast8_t IMG_REDUCE_cleanbadpix_fast_cli()
 
 void __attribute__ ((constructor)) libinit_img_reduce()
 {
-	init_img_reduce();
-	RegisterModule(__FILE__, "milk", "Image analysis for astronomy: basic routines");
+	if ( INITSTATUS_img_reduce == 0 )
+	{
+		init_img_reduce();
+		RegisterModule(__FILE__, "milk", "Image analysis for astronomy: basic routines");
+		INITSTATUS_img_reduce = 1;
+	}
 }
 
 
