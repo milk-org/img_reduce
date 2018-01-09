@@ -358,6 +358,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
     IDbadpix = image_ID(IDmask_name);
     xsize = data.image[IDbadpix].md[0].size[0];
     ysize = data.image[IDbadpix].md[0].size[1];
+
     xysize = xsize*ysize;
     NBopmax = xysize*100;
 
@@ -392,6 +393,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
     fflush(stdout);
     NBop = 0;
     bpcnt = 0;
+
     for(ii=0; ii<xsize; ii++)
         for(jj=0; jj<ysize; jj++)
         {
@@ -489,15 +491,28 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
     long ID;
     uint32_t *sizearray;
     long k;
-    long xysize;
+    long xysize, zsize;
     long IDout;
     long IDdark;
-    long ii;
+    long ii, kk;
+    int naxis;
+
 
     ID = image_ID(IDname);
-    sizearray = (uint32_t*) malloc(sizeof(uint32_t)*2);
+    sizearray = (uint32_t*) malloc(sizeof(uint32_t)*3);
     sizearray[0] = data.image[ID].md[0].size[0];
     sizearray[1] = data.image[ID].md[0].size[1];
+    naxis = 2;
+    if(data.image[ID].md[0].naxis == 3)
+	{	
+		sizearray[2] = data.image[ID].md[0].size[2];
+		zsize = sizearray[2];
+		naxis = 3;
+	}
+	else
+		zsize = 1;
+    
+    
     xysize = sizearray[0]*sizearray[1];
 
     IDdark = image_ID("dark"); // use if it exists
@@ -510,12 +525,12 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
         fflush(stdout);
         if(streamMode==1)
         {
-			IDout = create_image_ID(IDoutname, 2, sizearray, _DATATYPE_FLOAT, 1, 0);
+			IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 1, 0);
 			COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
 		}
 		else
 		{
-			IDout = create_image_ID(IDoutname, 2, sizearray, _DATATYPE_FLOAT, 0, 0);
+			IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 0, 0);
 		}
     }
     if(streamMode == 1)
@@ -548,20 +563,22 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
         memcpy(data.image[IDout].array.F, data.image[ID].array.F, sizeof(float)*xysize);
   
         if(IDdark!=-1)
+        for(kk=0;kk<zsize;kk++)
             for(ii=0; ii<xysize; ii++)
-                data.image[IDout].array.F[ii] -= data.image[IDdark].array.F[ii];
+                data.image[IDout].array.F[kk*xysize+ii] -= data.image[IDdark].array.F[ii];
 
+		for(kk=0;kk<zsize;kk++)
         for(k=0; k<badpixclean_NBbadpix; k++)
-            data.image[IDout].array.F[badpixclean_indexlist[k]] = 0.0;
+            data.image[IDout].array.F[kk*xysize+badpixclean_indexlist[k]] = 0.0;
 
 
 
-        
+        for(kk=0;kk<zsize;kk++)
         for(k=0; k<badpixclean_NBop; k++)
         {
         //    printf("Operation %ld / %ld    %ld x %f -> %ld", k, badpixclean_NBop, badpixclean_array_indexin[k], badpixclean_array_coeff[k], badpixclean_array_indexout[k]);
          //   fflush(stdout);
-            data.image[IDout].array.F[badpixclean_array_indexout[k]] += badpixclean_array_coeff[k]*data.image[IDout].array.F[badpixclean_array_indexin[k]];
+            data.image[IDout].array.F[kk*xysize+badpixclean_array_indexout[k]] += badpixclean_array_coeff[k]*data.image[IDout].array.F[kk*xysize+badpixclean_array_indexin[k]];
           //  printf("\n");
           //  fflush(stdout);
         }
