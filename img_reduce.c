@@ -104,7 +104,17 @@ int_fast8_t IMG_REDUCE_cubeprocess_cli()
 int_fast8_t IMG_REDUCE_cleanbadpix_fast_cli()
 {
     if(CLI_checkarg(1,4)+CLI_checkarg(2,4)+CLI_checkarg(3,3)==0)
-        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string, data.cmdargtoken[3].val.string);
+        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string, data.cmdargtoken[3].val.string, 0);
+    else
+        return 1;
+
+    return(0);
+}
+
+int_fast8_t IMG_REDUCE_cleanbadpix_stream_fast_cli()
+{
+    if(CLI_checkarg(1,4)+CLI_checkarg(2,4)+CLI_checkarg(3,3)==0)
+        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string, data.cmdargtoken[3].val.string, 1);
     else
         return 1;
 
@@ -133,7 +143,16 @@ int_fast8_t init_img_reduce()
   strcpy(data.cmd[data.NBcmd].info,"remove bad pixels (fast algo)");
   strcpy(data.cmd[data.NBcmd].syntax,"<image> <badpixmap> <output>");
   strcpy(data.cmd[data.NBcmd].example,"rmbadpixfast im bpmap outim");
-  strcpy(data.cmd[data.NBcmd].Ccall,"long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname)");
+  strcpy(data.cmd[data.NBcmd].Ccall,"long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname, int streamMode)");
+  data.NBcmd++;
+
+  strcpy(data.cmd[data.NBcmd].key,"rmbadpixfasts");
+  strcpy(data.cmd[data.NBcmd].module,__FILE__);
+  data.cmd[data.NBcmd].fp = IMG_REDUCE_cleanbadpix_stream_fast_cli;
+  strcpy(data.cmd[data.NBcmd].info,"remove bad pixels (fast algo, stream)");
+  strcpy(data.cmd[data.NBcmd].syntax,"<image> <badpixmap> <output>");
+  strcpy(data.cmd[data.NBcmd].example,"rmbadpixfast imstream bpmap outimstream");
+  strcpy(data.cmd[data.NBcmd].Ccall,"long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname, int streamMode)");
   data.NBcmd++;
 
 
@@ -465,7 +484,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
 
 
 
-long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname)
+long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname, int streamMode)
 {
     long ID;
     uint32_t *sizearray;
@@ -489,17 +508,28 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
     {
         printf("Creating output image\n");
         fflush(stdout);
-        IDout = create_image_ID(IDoutname, 2, sizearray, _DATATYPE_FLOAT, 1, 0);
-        COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
+        if(streamMode==1)
+        {
+			IDout = create_image_ID(IDoutname, 2, sizearray, _DATATYPE_FLOAT, 1, 0);
+			COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
+		}
+		else
+		{
+			IDout = create_image_ID(IDoutname, 2, sizearray, _DATATYPE_FLOAT, 0, 0);
+		}
     }
-    COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
+    if(streamMode == 1)
+		COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
 
     if(badpixclean_init==0)
         badpixclean_NBop = IMG_REDUCE_cleanbadpix_fast_precompute(IDbadpix_name);
 
 
-    while(1)
+	int OKloop = 1;
+    while(OKloop==1)
     {
+		if(streamMode==1)
+		{
         printf("Waiting for incoming image ... \n");
         fflush(stdout);
         if(data.image[ID].md[0].sem>0)
@@ -510,6 +540,9 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
             fflush(stdout);
             exit(0);
         }
+		}
+		else
+			OKloop = 0;
      
         data.image[IDout].md[0].write = 1;
         memcpy(data.image[IDout].array.F, data.image[ID].array.F, sizeof(float)*xysize);
@@ -533,8 +566,11 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
           //  fflush(stdout);
         }
 
-        if(data.image[IDout].md[0].sem > 0)
-            sem_post(data.image[IDout].semptr[0]);
+		if(streamMode==1)
+		{
+			if(data.image[IDout].md[0].sem > 0)
+				sem_post(data.image[IDout].semptr[0]);
+		}
         data.image[IDout].md[0].write = 0;
         data.image[IDout].md[0].cnt0++;
     }
