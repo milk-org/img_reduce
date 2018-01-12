@@ -560,29 +560,31 @@ long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, 
 			OKloop = 0;
      
         data.image[IDout].md[0].write = 1;
-        memcpy(data.image[IDout].array.F, data.image[ID].array.F, sizeof(float)*xysize);
-  
-        if(IDdark!=-1)
+        
+        
+         memcpy(data.image[IDout].array.F, data.image[ID].array.F, sizeof(float)*xysize*zsize); 
+        
         for(kk=0;kk<zsize;kk++)
-            for(ii=0; ii<xysize; ii++)
-                data.image[IDout].array.F[kk*xysize+ii] -= data.image[IDdark].array.F[ii];
+        { 
+             if(IDdark!=-1)
+				for(ii=0; ii<xysize; ii++)
+					data.image[IDout].array.F[kk*xysize+ii] -= data.image[IDdark].array.F[ii];
 
-		for(kk=0;kk<zsize;kk++)
-        for(k=0; k<badpixclean_NBbadpix; k++)
-            data.image[IDout].array.F[kk*xysize+badpixclean_indexlist[k]] = 0.0;
+			for(k=0; k<badpixclean_NBbadpix; k++)
+				data.image[IDout].array.F[kk*xysize+badpixclean_indexlist[k]] = 0.0;
 
 
 
-        for(kk=0;kk<zsize;kk++)
-        for(k=0; k<badpixclean_NBop; k++)
-        {
-        //    printf("Operation %ld / %ld    %ld x %f -> %ld", k, badpixclean_NBop, badpixclean_array_indexin[k], badpixclean_array_coeff[k], badpixclean_array_indexout[k]);
-         //   fflush(stdout);
-            data.image[IDout].array.F[kk*xysize+badpixclean_array_indexout[k]] += badpixclean_array_coeff[k]*data.image[IDout].array.F[kk*xysize+badpixclean_array_indexin[k]];
-          //  printf("\n");
-          //  fflush(stdout);
-        }
-
+			for(k=0; k<badpixclean_NBop; k++)
+			{
+			//    printf("Operation %ld / %ld    %ld x %f -> %ld", k, badpixclean_NBop, badpixclean_array_indexin[k], badpixclean_array_coeff[k], badpixclean_array_indexout[k]);
+			//   fflush(stdout);
+				data.image[IDout].array.F[kk*xysize+badpixclean_array_indexout[k]] += badpixclean_array_coeff[k]*data.image[IDout].array.F[kk*xysize+badpixclean_array_indexin[k]];
+			//  printf("\n");
+			//  fflush(stdout);
+			}
+		}
+		
 		if(streamMode==1)
 		{
 			if(data.image[IDout].md[0].sem > 0)
