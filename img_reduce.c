@@ -680,7 +680,7 @@ int IMG_REDUCE_correlMatrix(const char *IDin_name,  const char *IDmask_name, con
 
 int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig)
 {
-	long IDin, IDout, IDref;
+	long IDin, IDout, IDref, IDtin;
 	long IDcent, IDcorr, IDcentref;
 	long xsize, ysize;
 	float alpha = 1.0;
