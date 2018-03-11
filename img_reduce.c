@@ -692,9 +692,10 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	int loopOK = 1;
 	double tot, totim;
 	
-	int Zfactor = 4;
+	int zfactor = 4;
 	long IDcorrz;
-	double xsizez, ysizez;
+	long xsizez, ysizez;
+	float vmin;
 	
 	long peakx, peaky;
 	
@@ -771,7 +772,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		peak = 0.0;
         for(ii=0; ii<xsizez; ii++)
         for(jj=0; jj<ysizez; jj++)
-            if(data.image[IDcorrz].array.F[jj*xsizez+ii]>peak)
+            if( data.image[IDcorrz].array.F[jj*xsizez+ii] > peak )
             {
 				peakx = ii;
 				peaky = jj;
