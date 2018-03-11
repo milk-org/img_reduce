@@ -795,9 +795,9 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
             for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
                 for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
                 {
-					data.image[IDcorrz].array.F[jj*xcentsize+ii] -= (vmin+1.0)/2.0;
-					if(data.image[IDcorrz].array.F[jj*xcentsize+ii] < 0.0)
-						data.image[IDcorrz].array.F[jj*xcentsize+ii] = 0.0;
+					data.image[IDcorrz].array.F[jj*xsizez+ii] -= (vmin+1.0)/2.0;
+					if(data.image[IDcorrz].array.F[jj*xsizez+ii] < 0.0)
+						data.image[IDcorrz].array.F[jj*xsizez+ii] = 0.0;
 				}
             
             
@@ -807,7 +807,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
             for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
                 for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
                 {
-                    v = data.image[IDcorrz].array.F[jj*xcentsize+ii];
+                    v = data.image[IDcorrz].array.F[jj*xsizez+ii];
                    
                     totx += 1.0*(ii-xsizez/2)*v;
                     toty += 1.0*(jj-ysizez/2)*v;
