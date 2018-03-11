@@ -695,7 +695,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	xsize = data.image[IDin].md[0].size[0];
 	ysize = data.image[IDin].md[0].size[1];
 	
-	brad = (long) (0.2*(xcentsize + ycentsize));
+	brad = 3;
 	
 	IDref = image_ID(IDref_name);		
 	
@@ -771,11 +771,15 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
                     totx += 1.0*(ii-xcentsize/2)*v;
                     toty += 1.0*(jj-ycentsize/2)*v;
                     tot += v;
+                    data.image[IDcorr].array.F[jj*xcentsize+ii] -= 1.0;
                 }
             totx /= tot;
             toty /= tot;
+			
+		totx -= 0.5;
+		toty -= 0.5;
          
-        save_fits("outcorr", "!outcorr.fits");
+       // save_fits("outcorr", "!outcorr.fits");
 		delete_image_ID("outcorr");
 
 
