@@ -654,9 +654,135 @@ int IMG_REDUCE_correlMatrix(const char *IDin_name,  const char *IDmask_name, con
 
 
 
+/** Recenter and normalize image 
+ * 
+ * if mode = 1, shared memory loop
+ * 
+ */
+
+int IMG_REDUCE_centerim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig)
+{
+	long IDin, IDout, IDref;
+	long IDcent, IDcorr, IDcentref;
+	long xsize, ysize;
+	float alpha = 2.0;
+	float peak;
+	double tot, totx, toty;
+	long ii, jj, ii0, jj0;
+	long brad;
+	float v;
+	int loopOK = 1;
+	
+	IDin = image_ID(IDin_name);
+	xsize = data.image[IDin].md[0].size[0];
+	ysize = data.image[IDin].md[0].size[1];
+	
+	brad = (long) (0.2*(xcentsize + ycentsize));
+	
+	IDref = image_ID(IDref_name);		
+	
+	IDout = image_ID(IDout_name);
+	if(IDout==-1)
+		IDout = create_2Dimage_ID(IDout_name, xsize, ysize);
+	
+	
+	IDcent = image_ID("_tmp_centerim");
+	if(IDcent == -1)
+		IDcent = create_2Dimage_ID("_tmp_centerim", xcentsize, ycentsize);
+		
+	
+	IDcentref = image_ID("_tmp_centerimref");
+	if(IDcentref == -1)
+		{
+			IDcentref = create_2Dimage_ID("_tmp_centerimref", xcentsize, ycentsize);
+		
+		// Extract centering subimage
+		for(ii=0; ii<xcentsize; ii++)
+		for(jj=0; jj<ycentsize; jj++)
+		{
+		ii0 = ii + xcent0;
+		jj0 = jj + ycent0;
+		data.image[IDcentref].array.F[jj*xcentsize+ii] = data.image[IDref].array.F[jj0*xsize + ii0];
+		}
+	}	
+	
+	
+	while(loopOK == 1)
+	{
+		if(mode == 1) // wait for semaphore trigger		
+			COREMOD_MEMORY_image_set_semwait(IDin_name, semtrig);
+	
+		
+		
+			// Extract centering subimage
+	for(ii=0; ii<xcentsize; ii++)
+	for(jj=0; jj<ycentsize; jj++)
+	{
+		ii0 = ii + xcent0;
+		jj0 = jj + ycent0;
+		data.image[IDcent].array.F[jj*xcentsize+ii] = data.image[IDin].array.F[jj0*xsize + ii0];
+	}	
+				
+		/** compute offset */
+		fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
+		IDcorr = image_ID("outcorr");
+	
+//            save_fits("outcorr", "!outcorr0.fits");
+
+		peak = 0.0;
+        for(ii=0; ii<xcentsize*ycentsize; ii++)
+            if(data.image[IDcorr].array.F[ii]>peak)
+               peak = data.image[IDcorr].array.F[ii];
+
+		for(ii=0; ii<xcentsize*ycentsize; ii++)
+		if(data.image[IDcorr].array.F[ii]>0.0)
+		data.image[IDcorr].array.F[ii] = pow(data.image[IDcorr].array.F[ii]/peak, alpha);
+		else
+		data.image[IDcorr].array.F[ii] = 0.0;
+
+//			printf("---------- %ld %ld   %g %f ------------\n", (long) xsize, (long) ysize, peak, alpha);
+			
+            
+            totx = 0.0;
+            toty = 0.0;
+            tot = 0.0;
+            for(ii=xcentsize/2-brad; ii<xcentsize/2+brad; ii++)
+                for(jj=ycentsize/2-brad; jj<ycentsize/2+brad; jj++)
+                {
+                    v = data.image[IDcorr].array.F[jj*xcentsize+ii];
+                    totx += 1.0*(ii-xcentsize/2)*v;
+                    toty += 1.0*(jj-ycentsize/2)*v;
+                    tot += v;
+                }
+            totx /= tot;
+            toty /= tot;
+		delete_image_ID("outcorr");
 
 
-/** this is the main routine to pre-process a cube stream of images (PSFs)
+		printf("offset = %+8.3f %+8.3f\n", totx, toty);
+	
+		if(mode == 0)
+		{
+			loopOK = 0;
+		}
+		else
+		{
+			COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
+		}
+	}
+	
+	return(IDout);
+}
+
+
+
+
+
+
+
+
+
+/** this is the main routine to pre-process a cube stream of images (PSFs) for high contrast imaging stability analysis
  * 
  * 
  * Optional inputs:
@@ -745,6 +871,8 @@ int IMG_REDUCE_cubeprocess(const char *IDin_name)
         save_fits(IDin_name, "!out1.fits");
         list_image_ID();
     }
+
+
 
 
     /// compute photocenter
