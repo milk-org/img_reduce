@@ -871,6 +871,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 			COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
 		}
 		delete_image_ID("_translout");
+		exit(0);
 	}
 	
 	return(IDout);
