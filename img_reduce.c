@@ -683,7 +683,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	long IDin, IDout, IDref;
 	long IDcent, IDcorr, IDcentref;
 	long xsize, ysize;
-	float alpha = 2.0;
+	float alpha = 1.0;
 	float peak;
 	double totx, toty;
 	long ii, jj, ii0, jj0;
@@ -765,6 +765,9 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
                peak = data.image[IDcorr].array.F[ii];
 
 		for(ii=0; ii<xcentsize*ycentsize; ii++)
+			data.image[IDcorr].array.F[ii] /= peak;
+			
+		for(ii=0; ii<xcentsize*ycentsize; ii++)
 		{
 			data.image[IDcorr].array.F[ii] -= 0.5;
 			data.image[IDcorr].array.F[ii] *= 2.0;
@@ -774,7 +777,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 
 		for(ii=0; ii<xcentsize*ycentsize; ii++)
 		if(data.image[IDcorr].array.F[ii]>0.0)
-			data.image[IDcorr].array.F[ii] = pow(data.image[IDcorr].array.F[ii]/peak, alpha);
+			data.image[IDcorr].array.F[ii] = pow(data.image[IDcorr].array.F[ii], alpha);
 		else
 		data.image[IDcorr].array.F[ii] = 0.0;
 
