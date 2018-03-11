@@ -776,10 +776,10 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
             totx /= tot;
             toty /= tot;
 			
-		totx -= 0.5;
-		toty -= 0.5;
+		totx += 0.5;
+		toty += 0.5;
          
-       // save_fits("outcorr", "!outcorr.fits");
+        save_fits("outcorr", "!outcorr.fits");
 		delete_image_ID("outcorr");
 
 
