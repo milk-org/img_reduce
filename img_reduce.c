@@ -685,7 +685,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	long xsize, ysize;
 	float alpha = 2.0;
 	float peak;
-	double tot, totx, toty;
+	double totx, toty;
 	long ii, jj, ii0, jj0;
 	long brad;
 	float v;
