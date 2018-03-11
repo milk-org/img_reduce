@@ -851,7 +851,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 
 		fft_image_translate(IDin_name, "_translout", -centx, -centy);
 		IDtout = image_ID("_translout");
-		savfits("_translout","!_translout.fits");
+		savefits("_translout","!_translout.fits");
 
 		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, centx, centy);
 	
