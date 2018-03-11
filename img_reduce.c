@@ -713,15 +713,20 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	if(IDcentref == -1)
 		{
 			IDcentref = create_2Dimage_ID("_tmp_centerimref", xcentsize, ycentsize);
-		
+		totim = 0.0;
 		// Extract centering subimage
 		for(ii=0; ii<xcentsize; ii++)
 		for(jj=0; jj<ycentsize; jj++)
 		{
+			totim += data.image[IDref].array.F[jj0*xsize + ii0];
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
 		data.image[IDcentref].array.F[jj*xcentsize+ii] = data.image[IDref].array.F[jj0*xsize + ii0];
 		}
+		
+		for(ii=0; ii<xcentsize; ii++)
+			for(jj=0; jj<ycentsize; jj++)
+				data.image[IDcentref].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
 	}	
 	
 	
@@ -733,13 +738,19 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		
 		
 			// Extract centering subimage
+			totim = 0.0;
 	for(ii=0; ii<xcentsize; ii++)
 	for(jj=0; jj<ycentsize; jj++)
 	{
+		totim += data.image[IDin].array.F[jj0*xsize + ii0];
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
 		data.image[IDcent].array.F[jj*xcentsize+ii] = data.image[IDin].array.F[jj0*xsize + ii0];
 	}	
+	
+		for(ii=0; ii<xcentsize; ii++)
+			for(jj=0; jj<ycentsize; jj++)
+				data.image[IDcent].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
 				
 		/** compute offset */
 		fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
@@ -771,13 +782,11 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
                     totx += 1.0*(ii-xcentsize/2)*v;
                     toty += 1.0*(jj-ycentsize/2)*v;
                     tot += v;
-                    data.image[IDcorr].array.F[jj*xcentsize+ii] -= 1.0;
                 }
             totx /= tot;
             toty /= tot;
 			
-		totx += 0.5;
-		toty += 0.5;
+		
          
         save_fits("outcorr", "!outcorr.fits");
 		delete_image_ID("outcorr");
