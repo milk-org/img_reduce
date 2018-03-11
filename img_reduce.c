@@ -690,6 +690,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	long brad;
 	float v;
 	int loopOK = 1;
+	double tot, totim;
 	
 	IDin = image_ID(IDin_name);
 	xsize = data.image[IDin].md[0].size[0];
