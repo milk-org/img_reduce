@@ -787,7 +787,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
                 for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
                 {
-					v = data.image[IDcorrz].array.F[jj*xcentsize+ii];
+					v = data.image[IDcorrz].array.F[jj*xsizez+ii];
 					if (v < vmin)
 						vmin = v;
 				}
@@ -827,7 +827,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		delete_image_ID("outcorrz");
 
 
-		printf("vmin = %10f   offset = %+8.3f %+8.3f\n", vmin, totx, toty);
+		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, totx, toty);
 	
 		if(mode == 0)
 		{
