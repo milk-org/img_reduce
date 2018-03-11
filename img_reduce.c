@@ -795,9 +795,12 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
             for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
                 for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
                 {
-					data.image[IDcorrz].array.F[jj*xsizez+ii] -= (vmin+1.0)/2.0;
+					data.image[IDcorrz].array.F[jj*xsizez+ii] -= vmin;
+					data.image[IDcorrz].array.F[jj*xsizez+ii] /= (1.0-vmin);
+					
 					if(data.image[IDcorrz].array.F[jj*xsizez+ii] < 0.0)
 						data.image[IDcorrz].array.F[jj*xsizez+ii] = 0.0;
+					data.image[IDcorrz].array.F[jj*xsizez+ii] = pow(data.image[IDcorrz].array.F[jj*xsizez+ii], 2.0);
 				}
             
             
