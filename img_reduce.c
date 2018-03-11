@@ -767,12 +767,12 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		for(ii=0; ii<xcentsize*ycentsize; ii++)
 			data.image[IDcorr].array.F[ii] /= peak;
 			
-		for(ii=0; ii<xcentsize*ycentsize; ii++)
+	/*	for(ii=0; ii<xcentsize*ycentsize; ii++)
 		{
 			data.image[IDcorr].array.F[ii] -= 0.5;
 			data.image[IDcorr].array.F[ii] *= 2.0;
 		}
-
+*/
 
 
 		for(ii=0; ii<xcentsize*ycentsize; ii++)
