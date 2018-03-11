@@ -700,6 +700,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	long peakx, peaky;
 	
 	float centx, centy;
+	long IDtout;
 	
 	IDin = image_ID(IDin_name);
 	xsize = data.image[IDin].md[0].size[0];
@@ -826,11 +827,15 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 			centy = toty/zfactor;
 		
          
-        save_fits("outcorr", "!outcorr.fits");
-        save_fits("outcorrz", "!outcorrz.fits");
+       // save_fits("outcorr", "!outcorr.fits");
+      //  save_fits("outcorrz", "!outcorrz.fits");
 		delete_image_ID("outcorr");
 		delete_image_ID("outcorrz");
 
+
+
+		fft_image_translate(IDin_name, "_translout", -centx, -centy);
+		IDtout = image_ID("_translout");
 
 		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, centx, centy);
 	
@@ -840,8 +845,16 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		}
 		else
 		{
+			data.image[IDout].md[0].write = 1;
+			for(ii=0;ii<xsize;ii++)
+				for(jj=0;jj<ysize;jj++)
+					data.image[IDout].array.F[jj*xsize+ii] = data.image[IDtout].array.F[jj*xsize+ii];
+			data.image[IDout].md[0].write = 0;
+			data.image[IDout].md[0].cnt0++;
+			data.image[IDout].md[0].cnt1++;
 			COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
 		}
+		delete_image_ID("_translout");
 	}
 	
 	return(IDout);
