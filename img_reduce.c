@@ -719,15 +719,15 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		for(ii=0; ii<xcentsize; ii++)
 		for(jj=0; jj<ycentsize; jj++)
 		{
-			totim += data.image[IDref].array.F[jj0*xsize + ii0];
+			//totim += data.image[IDref].array.F[jj0*xsize + ii0];
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
 		data.image[IDcentref].array.F[jj*xcentsize+ii] = data.image[IDref].array.F[jj0*xsize + ii0];
 		}
 		
-		for(ii=0; ii<xcentsize; ii++)
+	/*	for(ii=0; ii<xcentsize; ii++)
 			for(jj=0; jj<ycentsize; jj++)
-				data.image[IDcentref].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
+				data.image[IDcentref].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;*/
 	}	
 	
 	
@@ -743,15 +743,16 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	for(ii=0; ii<xcentsize; ii++)
 	for(jj=0; jj<ycentsize; jj++)
 	{
-		totim += data.image[IDin].array.F[jj0*xsize + ii0];
+		//totim += data.image[IDin].array.F[jj0*xsize + ii0];
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
 		data.image[IDcent].array.F[jj*xcentsize+ii] = data.image[IDin].array.F[jj0*xsize + ii0];
 	}	
 	
-		for(ii=0; ii<xcentsize; ii++)
+	/*	for(ii=0; ii<xcentsize; ii++)
 			for(jj=0; jj<ycentsize; jj++)
 				data.image[IDcent].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
+		*/
 				
 		/** compute offset */
 		fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
