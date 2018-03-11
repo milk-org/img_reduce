@@ -869,7 +869,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 			data.image[IDout].md[0].write = 1;
 			for(ii=0;ii<xsize;ii++)
 				for(jj=0;jj<ysize;jj++)
-					data.image[IDout].array.F[jj*xsize+ii] = data.image[IDin].array.F[jj*xsize+ii];
+					data.image[IDout].array.F[jj*xsize+ii] = data.image[IDtout].array.F[jj*xsize+ii];
 			data.image[IDout].md[0].write = 0;
 			data.image[IDout].md[0].cnt0++;
 			data.image[IDout].md[0].cnt1++;
