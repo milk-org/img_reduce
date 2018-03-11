@@ -855,7 +855,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		fft_image_translate("tinim", "_translout", -centx, -centy);
 		delete_image_ID("tinim");
 		IDtout = image_ID("_translout");
-		save_fits("_translout","!_translout.fits");
+		//save_fits("_translout","!_translout.fits");
 		
 
 		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, centx, centy);
@@ -876,7 +876,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 			COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
 		}
 		delete_image_ID("_translout");
-		exit(0);
+
 	}
 	
 	return(IDout);
