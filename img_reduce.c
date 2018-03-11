@@ -851,7 +851,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		
 		printf("translating %s\n", IDin_name);
 		IDtin = create_2Dimage_ID("tinim", xsize, ysize);
-		memcpy(data.image[IDtin].array.F, data.image[IDin_name].array.F, sizeof(float)*xsize*ysize);		
+		memcpy(data.image[IDtin].array.F, data.image[IDin].array.F, sizeof(float)*xsize*ysize);		
 		fft_image_translate("tinim", "_translout", -centx, -centy);
 		delete_image_ID("tinim");
 		IDtout = image_ID("_translout");
