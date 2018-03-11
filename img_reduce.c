@@ -702,6 +702,9 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	float centx, centy;
 	long IDtout;
 	
+	uint32_t* imsizearray;
+	
+	
 	IDin = image_ID(IDin_name);
 	xsize = data.image[IDin].md[0].size[0];
 	ysize = data.image[IDin].md[0].size[1];
@@ -710,9 +713,21 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	
 	IDref = image_ID(IDref_name);		
 	
+	
 	IDout = image_ID(IDout_name);
 	if(IDout==-1)
-		IDout = create_2Dimage_ID(IDout_name, xsize, ysize);
+	{
+		if(mode == 0)
+			IDout = create_2Dimage_ID(IDout_name, xsize, ysize);
+		else
+		{
+			imsizearray = (uint32_t*) malloc(sizeof(uint32_t)*2);
+			imsizearray[0] = xsize;
+			imsizearray[1] = ysize;
+			IDout = create_image_ID(IDout_name, 2, imsizearray, _DATATYPE_FLOAT, 1, 1);
+			free(imsizearray);
+		}
+	}
 	
 	
 	IDcent = image_ID("_tmp_centerim");
