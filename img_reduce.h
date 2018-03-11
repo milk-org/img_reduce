@@ -7,6 +7,10 @@ int_fast8_t init_img_reduce();
 long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname, int streamMode);
 
 long IMG_REDUCE_cubesimplestat(const char *IDin_name);
+
+
+int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig);
+
 int IMG_REDUCE_cubeprocess(const char *IDin_name);
 
 #endif

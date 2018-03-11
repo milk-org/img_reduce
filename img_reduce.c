@@ -90,17 +90,6 @@ int_fast8_t IMG_REDUCE_cubesimplestat_cli()
     return(0);
 }
 
-int_fast8_t IMG_REDUCE_cubeprocess_cli()
-{
-    if(CLI_checkarg(1,4)==0)
-        IMG_REDUCE_cubeprocess(data.cmdargtoken[1].val.string);
-    else
-        return 1;
-
-    return(0);
-}
-
-
 int_fast8_t IMG_REDUCE_cleanbadpix_fast_cli()
 {
     if(CLI_checkarg(1,4)+CLI_checkarg(2,4)+CLI_checkarg(3,3)==0)
@@ -120,6 +109,26 @@ int_fast8_t IMG_REDUCE_cleanbadpix_stream_fast_cli()
 
     return(0);
 }
+
+int_fast8_t IMG_REDUCE_centernormim_cli()
+{
+	if(CLI_checkarg(1,4)+CLI_checkarg(2,4)+CLI_checkarg(3,3)+CLI_checkarg(4,2)+CLI_checkarg(5,2)+CLI_checkarg(6,2)+CLI_checkarg(7,2)+CLI_checkarg(8,2)+CLI_checkarg(9,2)==0)
+		IMG_REDUCE_centernormim(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string, data.cmdargtoken[3].val.string, data.cmdargtoken[4].val.numl, data.cmdargtoken[5].val.numl, data.cmdargtoken[6].val.numl, data.cmdargtoken[7].val.numl, data.cmdargtoken[8].val.numl, data.cmdargtoken[9].val.numl);
+	else
+		return 1;
+
+}
+
+int_fast8_t IMG_REDUCE_cubeprocess_cli()
+{
+    if(CLI_checkarg(1,4)==0)
+        IMG_REDUCE_cubeprocess(data.cmdargtoken[1].val.string);
+    else
+        return 1;
+
+    return(0);
+}
+
 
 
 
@@ -163,6 +172,15 @@ int_fast8_t init_img_reduce()
   strcpy(data.cmd[data.NBcmd].syntax,"<image>");
   strcpy(data.cmd[data.NBcmd].example,"cubesimplestat");
   strcpy(data.cmd[data.NBcmd].Ccall,"long IMG_REDUCUE_cubesimplestat(const char *IDin_name)");
+  data.NBcmd++;
+
+  strcpy(data.cmd[data.NBcmd].key,"imcenternorm");
+  strcpy(data.cmd[data.NBcmd].module,__FILE__);
+  data.cmd[data.NBcmd].fp = IMG_REDUCE_centernormim_cli;
+  strcpy(data.cmd[data.NBcmd].info, "image recenter and normalize to reference");
+  strcpy(data.cmd[data.NBcmd].syntax, "<imagein> <imageref> <imageout> <xcenteringstart> <ycenteringstart> <xcenteringsize> <ycenteringsize> <sharedmemmode> <semtrig>");
+  strcpy(data.cmd[data.NBcmd].example, "imcenternorm imin imref imout 100 100 20 20 0 0");
+  strcpy(data.cmd[data.NBcmd].Ccall,"IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig);");
   data.NBcmd++;
 
   strcpy(data.cmd[data.NBcmd].key,"imgcubeprocess");
@@ -660,7 +678,7 @@ int IMG_REDUCE_correlMatrix(const char *IDin_name,  const char *IDmask_name, con
  * 
  */
 
-int IMG_REDUCE_centerim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig)
+int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const char *IDout_name, long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig)
 {
 	long IDin, IDout, IDref;
 	long IDcent, IDcorr, IDcentref;
