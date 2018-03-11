@@ -721,13 +721,13 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		{
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
-		totim += data.image[IDref].array.F[jj0*xsize + ii0];
+//		totim += data.image[IDref].array.F[jj0*xsize + ii0];
 		data.image[IDcentref].array.F[jj*xcentsize+ii] = data.image[IDref].array.F[jj0*xsize + ii0];
 		}
 		
-		for(ii=0; ii<xcentsize; ii++)
+	/*	for(ii=0; ii<xcentsize; ii++)
 			for(jj=0; jj<ycentsize; jj++)
-				data.image[IDcentref].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
+				data.image[IDcentref].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;*/
 	}	
 	
 	
@@ -745,14 +745,11 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	{
 		ii0 = ii + xcent0;
 		jj0 = jj + ycent0;
-		totim += data.image[IDin].array.F[jj0*xsize + ii0];
+//		totim += data.image[IDin].array.F[jj0*xsize + ii0];
 		data.image[IDcent].array.F[jj*xcentsize+ii] = data.image[IDin].array.F[jj0*xsize + ii0];
 	}	
 	
-		for(ii=0; ii<xcentsize; ii++)
-			for(jj=0; jj<ycentsize; jj++)
-				data.image[IDcent].array.F[jj*xcentsize+ii] -= totim*xcentsize*ycentsize;
-		
+
 				
 		/** compute offset */
 		fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
@@ -760,14 +757,24 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	
 //            save_fits("outcorr", "!outcorr0.fits");
 
+
+
 		peak = 0.0;
         for(ii=0; ii<xcentsize*ycentsize; ii++)
             if(data.image[IDcorr].array.F[ii]>peak)
                peak = data.image[IDcorr].array.F[ii];
 
 		for(ii=0; ii<xcentsize*ycentsize; ii++)
+		{
+			data.image[IDcorr].array.F[ii] -= 0.5;
+			data.image[IDcorr].array.F[ii] *= 2.0;
+		}
+
+
+
+		for(ii=0; ii<xcentsize*ycentsize; ii++)
 		if(data.image[IDcorr].array.F[ii]>0.0)
-		data.image[IDcorr].array.F[ii] = pow(data.image[IDcorr].array.F[ii]/peak, alpha);
+			data.image[IDcorr].array.F[ii] = pow(data.image[IDcorr].array.F[ii]/peak, alpha);
 		else
 		data.image[IDcorr].array.F[ii] = 0.0;
 
