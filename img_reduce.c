@@ -699,6 +699,8 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	
 	long peakx, peaky;
 	
+	float centx, centy;
+	
 	IDin = image_ID(IDin_name);
 	xsize = data.image[IDin].md[0].size[0];
 	ysize = data.image[IDin].md[0].size[1];
@@ -819,6 +821,8 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
             totx /= tot;
             toty /= tot;
 			
+			centx = totx/zfactor;
+			centy = toty/zfactor;
 		
          
         save_fits("outcorr", "!outcorr.fits");
@@ -827,7 +831,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		delete_image_ID("outcorrz");
 
 
-		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, totx, toty);
+		printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad*zfactor, vmin, centx, centy);
 	
 		if(mode == 0)
 		{
