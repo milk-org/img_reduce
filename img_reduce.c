@@ -692,9 +692,11 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 	int loopOK = 1;
 	double tot, totim;
 	
+	int Zfactor = 4;
 	long IDcorrz;
 	double xsizez, ysizez;
 	
+	long peakx, peaky;
 	
 	IDin = image_ID(IDin_name);
 	xsize = data.image[IDin].md[0].size[0];
@@ -758,7 +760,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		/** compute offset */
 		fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
 		IDcorr = image_ID("outcorr");
-		fftzoom("outcorr", "outcorrz", 8);
+		fftzoom("outcorr", "outcorrz", zfactor);
 //            save_fits("outcorr", "!outcorr0.fits");
 
 
@@ -767,27 +769,45 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		ysizez = data.image[IDcorrz].md[0].size[1];
 
 		peak = 0.0;
-        for(ii=0; ii<xsizez*ysizez; ii++)
-            if(data.image[IDcorrz].array.F[ii]>peak)
-               peak = data.image[IDcorrz].array.F[ii];
+        for(ii=0; ii<xsizez; ii++)
+        for(jj=0; jj<ysizez; jj++)
+            if(data.image[IDcorrz].array.F[jj*xsizez+ii]>peak)
+            {
+				peakx = ii;
+				peaky = jj;
+               peak = data.image[IDcorrz].array.F[jj*xsizez+ii];
+		   }
+
 
 		for(ii=0; ii<xsizez*ysizez; ii++)
 			data.image[IDcorrz].array.F[ii] /= peak;
 			
-	/*	for(ii=0; ii<xcentsize*ycentsize; ii++)
-		{
-			data.image[IDcorr].array.F[ii] -= 0.5;
-			data.image[IDcorr].array.F[ii] *= 2.0;
-		}
-*/
+		vmin = 1.0;
+		for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
+                for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
+                {
+					v = data.image[IDcorrz].array.F[jj*xcentsize+ii];
+					if (v < vmin)
+						vmin = v;
+				}
+            
+            for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
+                for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
+                {
+					data.image[IDcorrz].array.F[jj*xcentsize+ii] -= (vmin+1.0)/2.0;
+					if(data.image[IDcorrz].array.F[jj*xcentsize+ii] < 0.0)
+						data.image[IDcorrz].array.F[jj*xcentsize+ii] = 0.0;
+				}
+            
             
             totx = 0.0;
             toty = 0.0;
             tot = 0.0;
-            for(ii=xsizez/2-brad; ii<xsizez/2+brad+1; ii++)
-                for(jj=ysizez/2-brad; jj<ysizez/2+brad+1; jj++)
+            for(ii=xsizez/2-brad*zfactor; ii<xsizez/2+brad*zfactor+1; ii++)
+                for(jj=ysizez/2-brad*zfactor; jj<ysizez/2+brad*zfactor+1; jj++)
                 {
                     v = data.image[IDcorrz].array.F[jj*xcentsize+ii];
+                   
                     totx += 1.0*(ii-xsizez/2)*v;
                     toty += 1.0*(jj-ysizez/2)*v;
                     tot += v;
@@ -803,7 +823,7 @@ int IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const
 		delete_image_ID("outcorrz");
 
 
-		printf("offset = %+8.3f %+8.3f\n", totx, toty);
+		printf("vmin = %10f   offset = %+8.3f %+8.3f\n", vmin, totx, toty);
 	
 		if(mode == 0)
 		{
