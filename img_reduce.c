@@ -64,7 +64,7 @@ long *badpixclean_indexlist;
 
 
 
-extern DATA data;
+//extern DATA data;
 
 static int INITSTATUS_img_reduce = 0;
 
