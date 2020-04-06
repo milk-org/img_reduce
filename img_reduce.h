@@ -1,7 +1,7 @@
 #ifndef _IMGREDUCE_H
 #define _IMGREDUCE_H
 
-void __attribute__ ((constructor)) libinit_img_reduce();
+void __attribute__((constructor)) libinit_img_reduce();
 
 
 imageID IMG_REDUCE_cubesimplestat(
@@ -18,7 +18,7 @@ imageID IMG_REDUCE_cleanbadpix_fast(
 
 
 imageID IMG_REDUCE_centernormim(
-    const char* IDin_name,
+    const char *IDin_name,
     const char *IDref_name,
     const char *IDout_name,
     long        xcent0,
