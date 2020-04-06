@@ -3,9 +3,6 @@
 
 void __attribute__ ((constructor)) libinit_img_reduce();
 
-errno_t init_img_reduce();
-
-
 
 imageID IMG_REDUCE_cubesimplestat(
     const char *IDin_name

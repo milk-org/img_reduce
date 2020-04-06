@@ -7,6 +7,29 @@
  * 
  */
 
+
+/* ================================================================== */
+/* ================================================================== */
+/*            MODULE INFO                                             */
+/* ================================================================== */
+/* ================================================================== */
+
+// module default short name
+// all CLI calls to this module functions will be <shortname>.<funcname>
+// if set to "", then calls use <funcname>
+#define MODULE_SHORTNAME_DEFAULT ""
+
+// Module short description 
+#define MODULE_DESCRIPTION       "Image analysis for astronomy: basic routines"
+
+// Application to which module belongs
+#define MODULE_APPLICATION       "milk"
+
+
+
+
+
+
 #include <stdint.h>
 #include <unistd.h>
 #include <malloc.h>
@@ -59,20 +82,24 @@ long *badpixclean_indexlist;
 
 
 
-//extern DATA data;
 
-static int INITSTATUS_img_reduce = 0;
+/* ================================================================== */
+/* ================================================================== */
+/*            INITIALIZE LIBRARY                                      */
+/* ================================================================== */
+/* ================================================================== */
 
-
-// CLI commands
+// Module initialization macro in CLIcore.h
+// macro argument defines module name for bindings
 //
-// function CLI_checkarg used to check arguments
-// 1: float
-// 2: long
-// 3: string
-// 4: existing image
-//
+INIT_MODULE_LIB(img_reduce)
 
+
+/* ================================================================== */
+/* ================================================================== */
+/*            COMMAND LINE INTERFACE (CLI) FUNCTIONS                  */
+/* ================================================================== */
+/* ================================================================== */
 
 
 errno_t IMG_REDUCE_cubesimplestat_cli()
@@ -198,18 +225,7 @@ errno_t IMG_REDUCE_cubeprocess_cli()
 
 
 
-void __attribute__ ((constructor)) libinit_img_reduce()
-{
-	if ( INITSTATUS_img_reduce == 0 )
-	{
-		init_img_reduce();
-		RegisterModule(__FILE__, "milk", "Image analysis for astronomy: basic routines");
-		INITSTATUS_img_reduce = 1;
-	}
-}
-
-
-errno_t init_img_reduce()
+static errno_t init_module_CLI()
 {
 
     RegisterCLIcommand(
