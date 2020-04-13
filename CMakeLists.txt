@@ -1,9 +1,29 @@
-project(lib_img_reduce_project)
+# library name
+set(LIBNAME "milkimgreduce")
+
+
+set(SOURCEFILES
+	img_reduce.c)
+
+set(INCLUDEFILES
+	img_reduce.h)
+
+
+# DEFAULT SETTINGS 
+# Do not change unless needed
+# =====================================================================
+
+project(lib_${LIBNAME}_project)
 
 include_directories ("${PROJECT_SOURCE_DIR}/src")
 include_directories ("${PROJECT_SOURCE_DIR}/..")
-add_library(img_reduce SHARED img_reduce.c)
 
-install(TARGETS img_reduce DESTINATION lib)
-install(FILES img_reduce.h DESTINATION include)
+
+# Library can be compiled from multiple source files
+# Convention: the main souce file is named <libname>.c
+# 
+add_library(${LIBNAME} SHARED ${SOURCEFILES})
+
+install(TARGETS ${LIBNAME} DESTINATION lib)
+install(FILES ${INCLUDEFILES} DESTINATION include)
 
