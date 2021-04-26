@@ -660,12 +660,12 @@ imageID IMG_REDUCE_cleanbadpix_fast(
         fflush(stdout);
         if(streamMode == 1)
         {
-            IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 1, 0);
+            IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 1, 0, 0);
             COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
         }
         else
         {
-            IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 0, 0);
+            IDout = create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 0, 0, 0);
         }
     }
     if(streamMode == 1)
@@ -872,7 +872,7 @@ imageID IMG_REDUCE_centernormim(
             imsizearray = (uint32_t *) malloc(sizeof(uint32_t) * 2);
             imsizearray[0] = xsize;
             imsizearray[1] = ysize;
-            IDout = create_image_ID(IDout_name, 2, imsizearray, _DATATYPE_FLOAT, 1, 1);
+            IDout = create_image_ID(IDout_name, 2, imsizearray, _DATATYPE_FLOAT, 1, 1, 0);
             free(imsizearray);
         }
     }
