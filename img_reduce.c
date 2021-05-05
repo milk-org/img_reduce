@@ -374,7 +374,16 @@ errno_t clean_bad_pix(
     xysize = xsize * ysize;
 
     sum_pix = (double *) malloc(sizeof(double) * zsize);
+    if(sum_pix == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     pix = (double *) malloc(sizeof(double) * zsize * 3 * 3);
+    if(pix == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
 
     copy_image_ID(IDbadpix_name, "badpix_tmp", 0);
     IDbadpix = image_ID("badpix_tmp");
@@ -490,12 +499,31 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(
     xysize = xsize * ysize;
 
     nearbypix_array_index = (long *) malloc(sizeof(long) * xysize);
+    if(nearbypix_array_index == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     nearbypix_array_dist2 = (float *) malloc(sizeof(float) * xysize);
+    if(nearbypix_array_dist2 == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     nearbypix_array_coeff = (float *) malloc(sizeof(float) * xysize);
+    if(nearbypix_array_coeff == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
 
     badpixclean_init = 1;
 
     badpixclean_indexlist = (long *) malloc(sizeof(long) * xysize);
+    if(badpixclean_indexlist == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     k = 0;
     for(ii = 0; ii < xysize; ii++)
     {
@@ -511,8 +539,22 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(
 
 
     badpixclean_array_indexin = (long *) malloc(sizeof(long) * xysize);
+    if(badpixclean_array_indexin == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     badpixclean_array_indexout = (long *) malloc(sizeof(long) * xysize);
+    if(badpixclean_array_indexout == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     badpixclean_array_coeff = (float *) malloc(sizeof(float) * xysize);
+    if(badpixclean_array_coeff == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
 
 
     printf("Computing operations...\n");
@@ -632,7 +674,13 @@ imageID IMG_REDUCE_cleanbadpix_fast(
 
 
     ID = image_ID(IDname);
+
     sizearray = (uint32_t *) malloc(sizeof(uint32_t) * 3);
+    if(sizearray == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     sizearray[0] = data.image[ID].md[0].size[0];
     sizearray[1] = data.image[ID].md[0].size[1];
     naxis = 2;
@@ -870,6 +918,11 @@ imageID IMG_REDUCE_centernormim(
         else
         {
             imsizearray = (uint32_t *) malloc(sizeof(uint32_t) * 2);
+            if(imsizearray == NULL) {
+                PRINT_ERROR("malloc returns NULL pointer");
+                abort();
+            }
+
             imsizearray[0] = xsize;
             imsizearray[1] = ysize;
             IDout = create_image_ID(IDout_name, 2, imsizearray, _DATATYPE_FLOAT, 1, 1, 0);
@@ -1155,7 +1208,16 @@ errno_t IMG_REDUCE_cubeprocess(
 
     /// compute photocenter
     xcent = (double *) malloc(sizeof(double) * zsize);
+    if(xcent == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
+
     ycent = (double *) malloc(sizeof(double) * zsize);
+    if(ycent == NULL) {
+        PRINT_ERROR("malloc returns NULL pointer");
+        abort();
+    }
 
     for(kk = 0; kk < zsize; kk++)
     {
