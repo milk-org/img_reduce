@@ -1205,7 +1205,6 @@ errno_t IMG_REDUCE_cubeprocess(
 
 
 
-
     /// compute photocenter
     xcent = (double *) malloc(sizeof(double) * zsize);
     if(xcent == NULL) {
