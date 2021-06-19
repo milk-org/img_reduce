@@ -454,8 +454,8 @@ errno_t clean_bad_pix(
 
         printf(" %ld bad pixels cleaned. %ld pixels left\n", fixed, left);
     }
-    delete_image_ID("badpix_tmp");
-    delete_image_ID("newbadpix_tmp");
+    delete_image_ID("badpix_tmp", DELETE_IMAGE_ERRMODE_WARNING);
+    delete_image_ID("newbadpix_tmp", DELETE_IMAGE_ERRMODE_WARNING);
 
     free(sum_pix);
     free(pix);
@@ -1062,8 +1062,8 @@ imageID IMG_REDUCE_centernormim(
 
         // save_fits("outcorr", "!outcorr.fits");
         //  save_fits("outcorrz", "!outcorrz.fits");
-        delete_image_ID("outcorr");
-        delete_image_ID("outcorrz");
+        delete_image_ID("outcorr", DELETE_IMAGE_ERRMODE_WARNING);
+        delete_image_ID("outcorrz", DELETE_IMAGE_ERRMODE_WARNING);
 
 
 
@@ -1072,7 +1072,7 @@ imageID IMG_REDUCE_centernormim(
         memcpy(data.image[IDtin].array.F, data.image[IDin].array.F,
                sizeof(float)*xsize * ysize);
         fft_image_translate("tinim", "_translout", -centx, -centy);
-        delete_image_ID("tinim");
+        delete_image_ID("tinim", DELETE_IMAGE_ERRMODE_WARNING);
         IDtout = image_ID("_translout");
         //save_fits("_translout","!_translout.fits");
 
@@ -1098,7 +1098,7 @@ imageID IMG_REDUCE_centernormim(
             data.image[IDout].md[0].cnt1++;
             COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
         }
-        delete_image_ID("_translout");
+        delete_image_ID("_translout", DELETE_IMAGE_ERRMODE_WARNING);
 
     }
 
@@ -1338,7 +1338,7 @@ errno_t IMG_REDUCE_cubeprocess(
             data.image[ID1].array.F[kk * xysize1 + ii] = data.image[IDt2].array.F[ii];
         }
 
-        delete_image_ID("translout");
+        delete_image_ID("translout", DELETE_IMAGE_ERRMODE_WARNING);
     }
 
 
