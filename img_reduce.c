@@ -318,8 +318,8 @@ imageID IMG_REDUCE_cubesimplestat(
     xysize = xsize * ysize;
 
 
-    IDave = create_2Dimage_ID("c_ave", xsize, ysize);
-    IDrms = create_2Dimage_ID("c_rms", xsize, ysize);
+    create_2Dimage_ID("c_ave", xsize, ysize, &IDave);
+    create_2Dimage_ID("c_rms", xsize, ysize, &IDrms);
 
     for(kk = 0; kk < zsize; kk++)
     {
@@ -827,7 +827,7 @@ errno_t IMG_REDUCE_correlMatrix(
     xysize = xsize * ysize;
 
     IDmask = image_ID(IDmask_name);
-    IDout = create_2Dimage_ID(IDout_name, zsize, zsize);
+    create_2Dimage_ID(IDout_name, zsize, zsize, &IDout);
 
     for(kk1 = 0; kk1 < zsize; kk1++)
         for(kk2 = kk1 + 1; kk2 < zsize; kk2++)
@@ -913,7 +913,7 @@ imageID IMG_REDUCE_centernormim(
     {
         if(mode == 0)
         {
-            IDout = create_2Dimage_ID(IDout_name, xsize, ysize);
+            create_2Dimage_ID(IDout_name, xsize, ysize, &IDout);
         }
         else
         {
@@ -934,14 +934,14 @@ imageID IMG_REDUCE_centernormim(
     IDcent = image_ID("_tmp_centerim");
     if(IDcent == -1)
     {
-        IDcent = create_2Dimage_ID("_tmp_centerim", xcentsize, ycentsize);
+        create_2Dimage_ID("_tmp_centerim", xcentsize, ycentsize, &IDcent);
     }
 
 
     IDcentref = image_ID("_tmp_centerimref");
     if(IDcentref == -1)
     {
-        IDcentref = create_2Dimage_ID("_tmp_centerimref", xcentsize, ycentsize);
+        create_2Dimage_ID("_tmp_centerimref", xcentsize, ycentsize, &IDcentref);
         // Extract centering subimage
         for(ii = 0; ii < xcentsize; ii++)
             for(jj = 0; jj < ycentsize; jj++)
@@ -1068,7 +1068,7 @@ imageID IMG_REDUCE_centernormim(
 
 
         printf("translating %s\n", IDin_name);
-        IDtin = create_2Dimage_ID("tinim", xsize, ysize);
+        create_2Dimage_ID("tinim", xsize, ysize, &IDtin);
         memcpy(data.image[IDtin].array.F, data.image[IDin].array.F,
                sizeof(float)*xsize * ysize);
         fft_image_translate("tinim", "_translout", -centx, -centy);
@@ -1276,7 +1276,7 @@ errno_t IMG_REDUCE_cubeprocess(
     ysize1 = 128;
     xysize1 = xsize1 * ysize1;
 
-    ID1 = create_3Dimage_ID("cropPSF", xsize1, ysize1, zsize);
+    create_3Dimage_ID("cropPSF", xsize1, ysize1, zsize, &ID1);
 
     for(kk = 0; kk < zsize; kk++)
     {
@@ -1300,7 +1300,7 @@ errno_t IMG_REDUCE_cubeprocess(
 
 
 
-    IDt1 = create_2Dimage_ID("translin", xsize1, ysize1);
+    create_2Dimage_ID("translin", xsize1, ysize1, &IDt1);
 
     for(kk = 0; kk < zsize; kk++)
     {
@@ -1353,7 +1353,7 @@ errno_t IMG_REDUCE_cubeprocess(
 
     save_fits("cropPSF", "!cropPSF.fits");
 
-    ID = create_2Dimage_ID("corrmask", xsize1, ysize1);
+    create_2Dimage_ID("corrmask", xsize1, ysize1, &ID);
     for(ii1 = 0; ii1 < xsize1; ii1++)
         for(jj1 = 0; jj1 < ysize1; jj1++)
         {
@@ -1396,9 +1396,9 @@ errno_t IMG_REDUCE_cubeprocess(
 
     printf("MOST SIMILAR PAIR : %ld %ld   [%lf]\n", kk1min, kk2min, vmin);
 
-    ID1 = create_2Dimage_ID("imp1", xsize1, ysize1);
-    ID2 = create_2Dimage_ID("imp2", xsize1, ysize1);
-    IDdiff = create_2Dimage_ID("imdiff", xsize1, ysize1);
+    create_2Dimage_ID("imp1", xsize1, ysize1, &ID1);
+    create_2Dimage_ID("imp2", xsize1, ysize1, &ID2);
+    create_2Dimage_ID("imdiff", xsize1, ysize1, &IDdiff);
     ID = image_ID("cropPSF");
 
     list_image_ID();
