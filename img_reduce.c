@@ -985,7 +985,7 @@ imageID IMG_REDUCE_centernormim(
         fft_correlation("_tmp_centerim", "_tmp_centerimref", "outcorr");
         //IDcorr = image_ID("outcorr");
         fftzoom("outcorr", "outcorrz", zfactor);
-        //            save_fits("outcorr", "!outcorr0.fits");
+        //            save_fits("outcorr", "outcorr0.fits");
 
 
         IDcorrz = image_ID("outcorrz");
@@ -1060,8 +1060,8 @@ imageID IMG_REDUCE_centernormim(
         centy = toty / zfactor;
 
 
-        // save_fits("outcorr", "!outcorr.fits");
-        //  save_fits("outcorrz", "!outcorrz.fits");
+        // save_fits("outcorr", "outcorr.fits");
+        //  save_fits("outcorrz", "outcorrz.fits");
         delete_image_ID("outcorr", DELETE_IMAGE_ERRMODE_WARNING);
         delete_image_ID("outcorrz", DELETE_IMAGE_ERRMODE_WARNING);
 
@@ -1074,7 +1074,7 @@ imageID IMG_REDUCE_centernormim(
         fft_image_translate("tinim", "_translout", -centx, -centy);
         delete_image_ID("tinim", DELETE_IMAGE_ERRMODE_WARNING);
         IDtout = image_ID("_translout");
-        //save_fits("_translout","!_translout.fits");
+        //save_fits("_translout","_translout.fits");
 
 
         printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad * zfactor,
@@ -1199,7 +1199,7 @@ errno_t IMG_REDUCE_cubeprocess(
         printf("REMOVING BAD PIXELS ...");
         fflush(stdout);
         clean_bad_pix(IDin_name, "calib_badpix");
-        save_fits(IDin_name, "!out1.fits");
+        save_fits(IDin_name, "out1.fits");
         list_image_ID();
     }
 
@@ -1351,7 +1351,7 @@ errno_t IMG_REDUCE_cubeprocess(
 
 
 
-    save_fits("cropPSF", "!cropPSF.fits");
+    save_fits("cropPSF", "cropPSF.fits");
 
     create_2Dimage_ID("corrmask", xsize1, ysize1, &ID);
     for(ii1 = 0; ii1 < xsize1; ii1++)
@@ -1374,10 +1374,10 @@ errno_t IMG_REDUCE_cubeprocess(
             }
         }
 
-    save_fits("corrmask", "!corrmask.fits");
+    save_fits("corrmask", "corrmask.fits");
 
     IMG_REDUCE_correlMatrix("cropPSF", "corrmask", "cropPSF_corr");
-    save_fits("cropPSF_corr", "!cropPSF_corr.fits");
+    save_fits("cropPSF_corr", "cropPSF_corr.fits");
 
     ID = image_ID("cropPSF_corr");
     kk1 = 0;
@@ -1411,9 +1411,9 @@ errno_t IMG_REDUCE_cubeprocess(
                                          data.image[ID].array.F[kk2min * xysize1 + ii];
     }
 
-    save_fits("imp1", "!imp1.fits");
-    save_fits("imp2", "!imp2.fits");
-    save_fits("imdiff", "!impdiff.fits");
+    save_fits("imp1", "imp1.fits");
+    save_fits("imp2", "imp2.fits");
+    save_fits("imdiff", "impdiff.fits");
 
     return RETURN_SUCCESS;
 }
