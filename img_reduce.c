@@ -60,13 +60,13 @@
  *
  */
 
-int badpixclean_init = 0;
-long badpixclean_NBop;
-long *badpixclean_array_indexin;
-long *badpixclean_array_indexout;
+int    badpixclean_init = 0;
+long   badpixclean_NBop;
+long  *badpixclean_array_indexin;
+long  *badpixclean_array_indexout;
 float *badpixclean_array_coeff;
 
-long badpixclean_NBbadpix;
+long  badpixclean_NBbadpix;
 long *badpixclean_indexlist;
 
 /* ================================================================== */
@@ -105,8 +105,10 @@ errno_t IMG_REDUCE_cleanbadpix_fast_cli()
 {
     if (CLI_checkarg(1, 4) + CLI_checkarg(2, 4) + CLI_checkarg(3, 3) == 0)
     {
-        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string,
-                                    data.cmdargtoken[3].val.string, 0);
+        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string,
+                                    data.cmdargtoken[2].val.string,
+                                    data.cmdargtoken[3].val.string,
+                                    0);
 
         return CLICMD_SUCCESS;
     }
@@ -120,8 +122,10 @@ errno_t IMG_REDUCE_cleanbadpix_stream_fast_cli()
 {
     if (CLI_checkarg(1, 4) + CLI_checkarg(2, 4) + CLI_checkarg(3, 3) == 0)
     {
-        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string,
-                                    data.cmdargtoken[3].val.string, 1);
+        IMG_REDUCE_cleanbadpix_fast(data.cmdargtoken[1].val.string,
+                                    data.cmdargtoken[2].val.string,
+                                    data.cmdargtoken[3].val.string,
+                                    1);
 
         return CLICMD_SUCCESS;
     }
@@ -133,14 +137,20 @@ errno_t IMG_REDUCE_cleanbadpix_stream_fast_cli()
 
 errno_t IMG_REDUCE_centernormim_cli()
 {
-    if (CLI_checkarg(1, 4) + CLI_checkarg(2, 4) + CLI_checkarg(3, 3) + CLI_checkarg(4, 2) + CLI_checkarg(5, 2) +
-            CLI_checkarg(6, 2) + CLI_checkarg(7, 2) + CLI_checkarg(8, 2) + CLI_checkarg(9, 2) ==
+    if (CLI_checkarg(1, 4) + CLI_checkarg(2, 4) + CLI_checkarg(3, 3) +
+            CLI_checkarg(4, 2) + CLI_checkarg(5, 2) + CLI_checkarg(6, 2) +
+            CLI_checkarg(7, 2) + CLI_checkarg(8, 2) + CLI_checkarg(9, 2) ==
         0)
     {
-        IMG_REDUCE_centernormim(
-            data.cmdargtoken[1].val.string, data.cmdargtoken[2].val.string, data.cmdargtoken[3].val.string,
-            data.cmdargtoken[4].val.numl, data.cmdargtoken[5].val.numl, data.cmdargtoken[6].val.numl,
-            data.cmdargtoken[7].val.numl, data.cmdargtoken[8].val.numl, data.cmdargtoken[9].val.numl);
+        IMG_REDUCE_centernormim(data.cmdargtoken[1].val.string,
+                                data.cmdargtoken[2].val.string,
+                                data.cmdargtoken[3].val.string,
+                                data.cmdargtoken[4].val.numl,
+                                data.cmdargtoken[5].val.numl,
+                                data.cmdargtoken[6].val.numl,
+                                data.cmdargtoken[7].val.numl,
+                                data.cmdargtoken[8].val.numl,
+                                data.cmdargtoken[9].val.numl);
 
         return CLICMD_SUCCESS;
     }
@@ -167,30 +177,55 @@ errno_t IMG_REDUCE_cubeprocess_cli()
 static errno_t init_module_CLI()
 {
 
-    RegisterCLIcommand("rmbadpixfast", __FILE__, IMG_REDUCE_cleanbadpix_fast_cli, "remove bad pixels (fast algo)",
-                       "<image> <badpixmap> <output>", "rmbadpixfast im bpmap outim",
-                       "long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char "
+    RegisterCLIcommand("rmbadpixfast",
+                       __FILE__,
+                       IMG_REDUCE_cleanbadpix_fast_cli,
+                       "remove bad pixels (fast algo)",
+                       "<image> <badpixmap> <output>",
+                       "rmbadpixfast im bpmap outim",
+                       "long IMG_REDUCE_cleanbadpix_fast(const char *IDname, "
+                       "const char *IDbadpix_name, const char "
                        "*IDoutname, int streamMode)");
 
-    RegisterCLIcommand("rmbadpixfasts", __FILE__, IMG_REDUCE_cleanbadpix_stream_fast_cli,
-                       "remove bad pixels (fast algo, stream)", "<image> <badpixmap> <output>",
+    RegisterCLIcommand("rmbadpixfasts",
+                       __FILE__,
+                       IMG_REDUCE_cleanbadpix_stream_fast_cli,
+                       "remove bad pixels (fast algo, stream)",
+                       "<image> <badpixmap> <output>",
                        "rmbadpixfast imstream bpmap outimstream",
-                       "long IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char "
+                       "long IMG_REDUCE_cleanbadpix_fast(const char *IDname, "
+                       "const char *IDbadpix_name, const char "
                        "*IDoutname, int streamMode)");
 
-    RegisterCLIcommand("cubesimplestat", __FILE__, IMG_REDUCE_cubesimplestat_cli, "simple data cube stats", "<image>",
-                       "cubesimplestat", "long IMG_REDUCUE_cubesimplestat(const char *IDin_name)");
+    RegisterCLIcommand(
+        "cubesimplestat",
+        __FILE__,
+        IMG_REDUCE_cubesimplestat_cli,
+        "simple data cube stats",
+        "<image>",
+        "cubesimplestat",
+        "long IMG_REDUCUE_cubesimplestat(const char *IDin_name)");
 
-    RegisterCLIcommand("imcenternorm", __FILE__, IMG_REDUCE_centernormim_cli,
+    RegisterCLIcommand("imcenternorm",
+                       __FILE__,
+                       IMG_REDUCE_centernormim_cli,
                        "image recenter and normalize to reference",
-                       "<imagein> <imageref> <imageout> <xcenteringstart> <ycenteringstart> <xcenteringsize> "
+                       "<imagein> <imageref> <imageout> <xcenteringstart> "
+                       "<ycenteringstart> <xcenteringsize> "
                        "<ycenteringsize> <sharedmemmode> <semtrig>",
                        "imcenternorm imin imref imout 100 100 20 20 0 0",
-                       "IMG_REDUCE_centernormim(const char* IDin_name, const char *IDref_name, const char *IDout_name, "
-                       "long xcent0, long ycent0, long xcentsize, long ycentsize, int mode, int semtrig);");
+                       "IMG_REDUCE_centernormim(const char* IDin_name, const "
+                       "char *IDref_name, const char *IDout_name, "
+                       "long xcent0, long ycent0, long xcentsize, long "
+                       "ycentsize, int mode, int semtrig);");
 
-    RegisterCLIcommand("imgcubeprocess", __FILE__, IMG_REDUCE_cubeprocess_cli, "data cube process", "<image>",
-                       "imgcubeprocess", "int IMG_REDUCE_cubeprocess(const char *IDin_name)");
+    RegisterCLIcommand("imgcubeprocess",
+                       __FILE__,
+                       IMG_REDUCE_cubeprocess_cli,
+                       "data cube process",
+                       "<image>",
+                       "imgcubeprocess",
+                       "int IMG_REDUCE_cubeprocess(const char *IDin_name)");
 
     // add atexit functions here
 
@@ -204,11 +239,11 @@ static errno_t init_module_CLI()
 imageID IMG_REDUCE_cubesimplestat(const char *IDin_name)
 {
     imageID IDin;
-    long xsize, ysize, zsize;
-    long xysize;
-    long ii, kk;
-    long offset;
-    double tmpf;
+    long    xsize, ysize, zsize;
+    long    xysize;
+    long    ii, kk;
+    long    offset;
+    double  tmpf;
 
     long IDave, IDrms;
 
@@ -239,7 +274,8 @@ imageID IMG_REDUCE_cubesimplestat(const char *IDin_name)
         data.image[IDave].array.F[ii] /= zsize;
         data.image[IDrms].array.F[ii] /= zsize;
         data.image[IDrms].array.F[ii] =
-            sqrt(data.image[IDrms].array.F[ii] - data.image[IDave].array.F[ii] * data.image[IDave].array.F[ii]);
+            sqrt(data.image[IDrms].array.F[ii] -
+                 data.image[IDave].array.F[ii] * data.image[IDave].array.F[ii]);
     }
 
     return IDin;
@@ -249,31 +285,31 @@ imageID IMG_REDUCE_cubesimplestat(const char *IDin_name)
 
 errno_t clean_bad_pix(const char *IDin_name, const char *IDbadpix_name)
 {
-    long ii, jj, kk;
-    long IDin, IDbadpix, IDbadpix1; //, IDouttmp;
-    long xsize, ysize, zsize;
+    long    ii, jj, kk;
+    long    IDin, IDbadpix, IDbadpix1; //, IDouttmp;
+    long    xsize, ysize, zsize;
     double *pix;
-    double bpix[3][3];
-    long i, j;
-    double sum_bpix, *sum_pix;
-    long left, fixed;
-    long xysize;
+    double  bpix[3][3];
+    long    i, j;
+    double  sum_bpix, *sum_pix;
+    long    left, fixed;
+    long    xysize;
 
     IDin = image_ID(IDin_name);
 
-    xsize = data.image[IDin].md[0].size[0];
-    ysize = data.image[IDin].md[0].size[1];
-    zsize = data.image[IDin].md[0].size[2];
+    xsize  = data.image[IDin].md[0].size[0];
+    ysize  = data.image[IDin].md[0].size[1];
+    zsize  = data.image[IDin].md[0].size[2];
     xysize = xsize * ysize;
 
-    sum_pix = (double *)malloc(sizeof(double) * zsize);
+    sum_pix = (double *) malloc(sizeof(double) * zsize);
     if (sum_pix == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    pix = (double *)malloc(sizeof(double) * zsize * 3 * 3);
+    pix = (double *) malloc(sizeof(double) * zsize * 3 * 3);
     if (pix == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -291,7 +327,7 @@ errno_t clean_bad_pix(const char *IDin_name, const char *IDbadpix_name)
     left = 1;
     while (left != 0)
     {
-        left = 0;
+        left  = 0;
         fixed = 0;
 
         for (jj = 1; jj < ysize - 1; jj++)
@@ -311,13 +347,20 @@ errno_t clean_bad_pix(const char *IDin_name, const char *IDbadpix_name)
                             for (kk = 0; kk < zsize; kk++)
                             {
                                 pix[kk * 9 + j * 3 + i] =
-                                    data.image[IDin].array.F[kk * xysize + (jj - 1 + j) * xsize + (ii - 1 + i)];
+                                    data.image[IDin]
+                                        .array
+                                        .F[kk * xysize + (jj - 1 + j) * xsize +
+                                           (ii - 1 + i)];
                             }
-                            bpix[i][j] = data.image[IDbadpix].array.F[(jj - 1 + j) * xsize + (ii - 1 + i)];
+                            bpix[i][j] =
+                                data.image[IDbadpix]
+                                    .array
+                                    .F[(jj - 1 + j) * xsize + (ii - 1 + i)];
                             sum_bpix += bpix[i][j];
                             for (kk = 0; kk < zsize; kk++)
                             {
-                                sum_pix[kk] += (1.0 - bpix[i][j]) * pix[kk * 9 + j * 3 + i];
+                                sum_pix[kk] += (1.0 - bpix[i][j]) *
+                                               pix[kk * 9 + j * 3 + i];
                             }
                         }
                     sum_bpix = 9.0 - sum_bpix;
@@ -325,7 +368,9 @@ errno_t clean_bad_pix(const char *IDin_name, const char *IDbadpix_name)
                     {
                         for (kk = 0; kk < zsize; kk++)
                         {
-                            data.image[IDin].array.F[kk * xysize + jj * xsize + ii] = sum_pix[kk] / sum_bpix;
+                            data.image[IDin]
+                                .array.F[kk * xysize + jj * xsize + ii] =
+                                sum_pix[kk] / sum_bpix;
                         }
                         data.image[IDbadpix1].array.F[jj * xsize + ii] = 0.0;
                         fixed += 1;
@@ -340,7 +385,8 @@ errno_t clean_bad_pix(const char *IDin_name, const char *IDbadpix_name)
         for (jj = 1; jj < ysize - 1; jj++)
             for (ii = 1; ii < xsize - 1; ii++)
             {
-                data.image[IDbadpix].array.F[jj * xsize + ii] = data.image[IDbadpix1].array.F[jj * xsize + ii];
+                data.image[IDbadpix].array.F[jj * xsize + ii] =
+                    data.image[IDbadpix1].array.F[jj * xsize + ii];
             }
 
         printf(" %ld bad pixels cleaned. %ld pixels left\n", fixed, left);
@@ -368,7 +414,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
     long NBnearbypix;
     long bpcnt;
 
-    long *nearbypix_array_index;
+    long  *nearbypix_array_index;
     float *nearbypix_array_dist2;
     float *nearbypix_array_coeff;
 
@@ -378,26 +424,26 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
     fflush(stdout);
 
     IDbadpix = image_ID(IDmask_name);
-    xsize = data.image[IDbadpix].md[0].size[0];
-    ysize = data.image[IDbadpix].md[0].size[1];
+    xsize    = data.image[IDbadpix].md[0].size[0];
+    ysize    = data.image[IDbadpix].md[0].size[1];
 
     xysize = xsize * ysize;
 
-    nearbypix_array_index = (long *)malloc(sizeof(long) * xysize);
+    nearbypix_array_index = (long *) malloc(sizeof(long) * xysize);
     if (nearbypix_array_index == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    nearbypix_array_dist2 = (float *)malloc(sizeof(float) * xysize);
+    nearbypix_array_dist2 = (float *) malloc(sizeof(float) * xysize);
     if (nearbypix_array_dist2 == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    nearbypix_array_coeff = (float *)malloc(sizeof(float) * xysize);
+    nearbypix_array_coeff = (float *) malloc(sizeof(float) * xysize);
     if (nearbypix_array_coeff == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -406,7 +452,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
 
     badpixclean_init = 1;
 
-    badpixclean_indexlist = (long *)malloc(sizeof(long) * xysize);
+    badpixclean_indexlist = (long *) malloc(sizeof(long) * xysize);
     if (badpixclean_indexlist == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -425,21 +471,21 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
 
     badpixclean_NBbadpix = k;
 
-    badpixclean_array_indexin = (long *)malloc(sizeof(long) * xysize);
+    badpixclean_array_indexin = (long *) malloc(sizeof(long) * xysize);
     if (badpixclean_array_indexin == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    badpixclean_array_indexout = (long *)malloc(sizeof(long) * xysize);
+    badpixclean_array_indexout = (long *) malloc(sizeof(long) * xysize);
     if (badpixclean_array_indexout == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    badpixclean_array_coeff = (float *)malloc(sizeof(float) * xysize);
+    badpixclean_array_coeff = (float *) malloc(sizeof(float) * xysize);
     if (badpixclean_array_coeff == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -448,7 +494,7 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
 
     printf("Computing operations...\n");
     fflush(stdout);
-    NBop = 0;
+    NBop  = 0;
     bpcnt = 0;
 
     for (ii = 0; ii < xsize; ii++)
@@ -457,29 +503,36 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
             if (data.image[IDbadpix].array.F[jj * xsize + ii] > 0.5)
             {
                 // fill up array of nearby pixels
-                k = 0;
+                k       = 0;
                 distmax = 1;
                 while (k < 4)
                 {
-                    k = 0;
+                    k        = 0;
                     coefftot = 0.0;
                     for (ii1 = ii - distmax; ii1 < ii + distmax + 1; ii1++)
                         for (jj1 = jj - distmax; jj1 < jj + distmax + 1; jj1++)
                         {
-                            if ((ii1 > -1) && (ii1 < xsize) && (jj1 > -1) && (jj1 < ysize) &&
-                                (data.image[IDbadpix].array.F[jj1 * xsize + ii1] < 0.5))
+                            if ((ii1 > -1) && (ii1 < xsize) && (jj1 > -1) &&
+                                (jj1 < ysize) &&
+                                (data.image[IDbadpix]
+                                     .array.F[jj1 * xsize + ii1] < 0.5))
                             {
                                 if ((ii1 != ii) || (jj1 != jj))
                                 {
-                                    nearbypix_array_index[k] = (long)(jj1 * xsize + ii1);
+                                    nearbypix_array_index[k] =
+                                        (long) (jj1 * xsize + ii1);
                                     nearbypix_array_dist2[k] =
-                                        (float)(1.0 * (ii1 - ii) * (ii1 - ii) + 1.0 * (jj1 - jj) * (jj1 - jj));
-                                    nearbypix_array_coeff[k] = pow(1.0 / nearbypix_array_dist2[k], 2.0);
+                                        (float) (1.0 * (ii1 - ii) * (ii1 - ii) +
+                                                 1.0 * (jj1 - jj) * (jj1 - jj));
+                                    nearbypix_array_coeff[k] =
+                                        pow(1.0 / nearbypix_array_dist2[k],
+                                            2.0);
                                     coefftot += nearbypix_array_coeff[k];
                                     k++;
                                     if (k > xysize - 1)
                                     {
-                                        printf("ERROR: too many nearby pixels\n");
+                                        printf(
+                                            "ERROR: too many nearby pixels\n");
                                         exit(0);
                                     }
                                 }
@@ -501,14 +554,16 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
                 {
                     nearbypix_array_coeff[k] /= coefftot;
 
-                    badpixclean_array_indexin[NBop] = nearbypix_array_index[k];
+                    badpixclean_array_indexin[NBop]  = nearbypix_array_index[k];
                     badpixclean_array_indexout[NBop] = jj * xsize + ii;
-                    badpixclean_array_coeff[NBop] = nearbypix_array_coeff[k];
+                    badpixclean_array_coeff[NBop]    = nearbypix_array_coeff[k];
                     NBop++;
 
                     if (NBop > xysize - 1)
                     {
-                        printf("ERROR: TOO MANY BAD PIXELS .... sorry... you need a better detector.\n");
+                        printf(
+                            "ERROR: TOO MANY BAD PIXELS .... sorry... you need "
+                            "a better detector.\n");
                         exit(0);
                     }
                 }
@@ -534,21 +589,23 @@ long IMG_REDUCE_cleanbadpix_fast_precompute(const char *IDmask_name)
     return (NBop);
 }
 
-imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_name, const char *IDoutname,
-                                    int streamMode)
+imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname,
+                                    const char *IDbadpix_name,
+                                    const char *IDoutname,
+                                    int         streamMode)
 {
-    imageID ID;
+    imageID   ID;
     uint32_t *sizearray;
-    long k;
-    long xysize, zsize;
-    imageID IDout;
-    imageID IDdark;
-    long ii, kk;
-    int naxis;
+    long      k;
+    long      xysize, zsize;
+    imageID   IDout;
+    imageID   IDdark;
+    long      ii, kk;
+    int       naxis;
 
     ID = image_ID(IDname);
 
-    sizearray = (uint32_t *)malloc(sizeof(uint32_t) * 3);
+    sizearray = (uint32_t *) malloc(sizeof(uint32_t) * 3);
     if (sizearray == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -557,12 +614,12 @@ imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_nam
 
     sizearray[0] = data.image[ID].md[0].size[0];
     sizearray[1] = data.image[ID].md[0].size[1];
-    naxis = 2;
+    naxis        = 2;
     if (data.image[ID].md[0].naxis == 3)
     {
         sizearray[2] = data.image[ID].md[0].size[2];
-        zsize = sizearray[2];
-        naxis = 3;
+        zsize        = sizearray[2];
+        naxis        = 3;
     }
     else
     {
@@ -581,12 +638,26 @@ imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_nam
         fflush(stdout);
         if (streamMode == 1)
         {
-            create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 1, 0, 0, &IDout);
+            create_image_ID(IDoutname,
+                            naxis,
+                            sizearray,
+                            _DATATYPE_FLOAT,
+                            1,
+                            0,
+                            0,
+                            &IDout);
             COREMOD_MEMORY_image_set_createsem(IDoutname, 2);
         }
         else
         {
-            create_image_ID(IDoutname, naxis, sizearray, _DATATYPE_FLOAT, 0, 0, 0, &IDout);
+            create_image_ID(IDoutname,
+                            naxis,
+                            sizearray,
+                            _DATATYPE_FLOAT,
+                            0,
+                            0,
+                            0,
+                            &IDout);
         }
     }
     if (streamMode == 1)
@@ -596,7 +667,8 @@ imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_nam
 
     if (badpixclean_init == 0)
     {
-        badpixclean_NBop = IMG_REDUCE_cleanbadpix_fast_precompute(IDbadpix_name);
+        badpixclean_NBop =
+            IMG_REDUCE_cleanbadpix_fast_precompute(IDbadpix_name);
     }
 
     int OKloop = 1;
@@ -624,27 +696,34 @@ imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_nam
 
         data.image[IDout].md[0].write = 1;
 
-        memcpy(data.image[IDout].array.F, data.image[ID].array.F, sizeof(float) * xysize * zsize);
+        memcpy(data.image[IDout].array.F,
+               data.image[ID].array.F,
+               sizeof(float) * xysize * zsize);
 
         for (kk = 0; kk < zsize; kk++)
         {
             if (IDdark != -1)
                 for (ii = 0; ii < xysize; ii++)
                 {
-                    data.image[IDout].array.F[kk * xysize + ii] -= data.image[IDdark].array.F[ii];
+                    data.image[IDout].array.F[kk * xysize + ii] -=
+                        data.image[IDdark].array.F[ii];
                 }
 
             for (k = 0; k < badpixclean_NBbadpix; k++)
             {
-                data.image[IDout].array.F[kk * xysize + badpixclean_indexlist[k]] = 0.0;
+                data.image[IDout]
+                    .array.F[kk * xysize + badpixclean_indexlist[k]] = 0.0;
             }
 
             for (k = 0; k < badpixclean_NBop; k++)
             {
                 //    printf("Operation %ld / %ld    %ld x %f -> %ld", k, badpixclean_NBop, badpixclean_array_indexin[k], badpixclean_array_coeff[k], badpixclean_array_indexout[k]);
                 //   fflush(stdout);
-                data.image[IDout].array.F[kk * xysize + badpixclean_array_indexout[k]] +=
-                    badpixclean_array_coeff[k] * data.image[IDout].array.F[kk * xysize + badpixclean_array_indexin[k]];
+                data.image[IDout]
+                    .array.F[kk * xysize + badpixclean_array_indexout[k]] +=
+                    badpixclean_array_coeff[k] *
+                    data.image[IDout]
+                        .array.F[kk * xysize + badpixclean_array_indexin[k]];
                 //  printf("\n");
                 //  fflush(stdout);
             }
@@ -666,15 +745,17 @@ imageID IMG_REDUCE_cleanbadpix_fast(const char *IDname, const char *IDbadpix_nam
     return IDout;
 }
 
-errno_t IMG_REDUCE_correlMatrix(const char *IDin_name, const char *IDmask_name, const char *IDout_name)
+errno_t IMG_REDUCE_correlMatrix(const char *IDin_name,
+                                const char *IDmask_name,
+                                const char *IDout_name)
 {
     imageID IDin, IDout;
     imageID IDmask;
-    long xsize, ysize, zsize;
-    long xysize;
-    long ii, kk1, kk2;
-    double v, tot;
-    double tot1, tot2;
+    long    xsize, ysize, zsize;
+    long    xysize;
+    long    ii, kk1, kk2;
+    double  v, tot;
+    double  tot1, tot2;
 
     IDin = image_ID(IDin_name);
 
@@ -690,7 +771,7 @@ errno_t IMG_REDUCE_correlMatrix(const char *IDin_name, const char *IDmask_name, 
     for (kk1 = 0; kk1 < zsize; kk1++)
         for (kk2 = kk1 + 1; kk2 < zsize; kk2++)
         {
-            tot = 0.0;
+            tot  = 0.0;
             tot1 = 0.0;
             tot2 = 0.0;
 
@@ -718,31 +799,38 @@ errno_t IMG_REDUCE_correlMatrix(const char *IDin_name, const char *IDmask_name, 
  *
  */
 
-imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, const char *IDout_name, long xcent0,
-                                long ycent0, long xcentsize, long ycentsize, int mode, int semtrig)
+imageID IMG_REDUCE_centernormim(const char *IDin_name,
+                                const char *IDref_name,
+                                const char *IDout_name,
+                                long        xcent0,
+                                long        ycent0,
+                                long        xcentsize,
+                                long        ycentsize,
+                                int         mode,
+                                int         semtrig)
 {
     imageID IDin, IDout, IDref, IDtin;
     imageID IDcent, IDcentref;
-    long xsize, ysize;
-    float peak;
-    double totx, toty;
-    long ii, jj, ii0, jj0;
-    long brad;
-    float v;
-    int loopOK = 1;
-    double tot;
+    long    xsize, ysize;
+    float   peak;
+    double  totx, toty;
+    long    ii, jj, ii0, jj0;
+    long    brad;
+    float   v;
+    int     loopOK = 1;
+    double  tot;
 
-    int zfactor = 4;
-    long IDcorrz;
-    long xsizez, ysizez;
+    int   zfactor = 4;
+    long  IDcorrz;
+    long  xsizez, ysizez;
     float vmin, vlim;
 
     float centx, centy;
-    long IDtout;
+    long  IDtout;
 
     uint32_t *imsizearray;
 
-    IDin = image_ID(IDin_name);
+    IDin  = image_ID(IDin_name);
     xsize = data.image[IDin].md[0].size[0];
     ysize = data.image[IDin].md[0].size[1];
 
@@ -759,7 +847,7 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
         }
         else
         {
-            imsizearray = (uint32_t *)malloc(sizeof(uint32_t) * 2);
+            imsizearray = (uint32_t *) malloc(sizeof(uint32_t) * 2);
             if (imsizearray == NULL)
             {
                 PRINT_ERROR("malloc returns NULL pointer");
@@ -768,7 +856,14 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
 
             imsizearray[0] = xsize;
             imsizearray[1] = ysize;
-            create_image_ID(IDout_name, 2, imsizearray, _DATATYPE_FLOAT, 1, 1, 0, &IDout);
+            create_image_ID(IDout_name,
+                            2,
+                            imsizearray,
+                            _DATATYPE_FLOAT,
+                            1,
+                            1,
+                            0,
+                            &IDout);
             free(imsizearray);
         }
     }
@@ -790,7 +885,8 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
                 ii0 = ii + xcent0;
                 jj0 = jj + ycent0;
                 //		totim += data.image[IDref].array.F[jj0*xsize + ii0];
-                data.image[IDcentref].array.F[jj * xcentsize + ii] = data.image[IDref].array.F[jj0 * xsize + ii0];
+                data.image[IDcentref].array.F[jj * xcentsize + ii] =
+                    data.image[IDref].array.F[jj0 * xsize + ii0];
             }
 
         /*	for(ii=0; ii<xcentsize; ii++)
@@ -812,7 +908,8 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
                 ii0 = ii + xcent0;
                 jj0 = jj + ycent0;
                 //		totim += data.image[IDin].array.F[jj0*xsize + ii0];
-                data.image[IDcent].array.F[jj * xcentsize + ii] = data.image[IDin].array.F[jj0 * xsize + ii0];
+                data.image[IDcent].array.F[jj * xcentsize + ii] =
+                    data.image[IDin].array.F[jj0 * xsize + ii0];
             }
 
         /** compute offset */
@@ -822,8 +919,8 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
         //            save_fits("outcorr", "outcorr0.fits");
 
         IDcorrz = image_ID("outcorrz");
-        xsizez = data.image[IDcorrz].md[0].size[0];
-        ysizez = data.image[IDcorrz].md[0].size[1];
+        xsizez  = data.image[IDcorrz].md[0].size[0];
+        ysizez  = data.image[IDcorrz].md[0].size[1];
 
         peak = 0.0;
         for (ii = 0; ii < xsizez; ii++)
@@ -841,8 +938,12 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
         }
 
         vmin = 1.0;
-        for (ii = xsizez / 2 - brad * zfactor; ii < xsizez / 2 + brad * zfactor + 1; ii++)
-            for (jj = ysizez / 2 - brad * zfactor; jj < ysizez / 2 + brad * zfactor + 1; jj++)
+        for (ii = xsizez / 2 - brad * zfactor;
+             ii < xsizez / 2 + brad * zfactor + 1;
+             ii++)
+            for (jj = ysizez / 2 - brad * zfactor;
+                 jj < ysizez / 2 + brad * zfactor + 1;
+                 jj++)
             {
                 v = data.image[IDcorrz].array.F[jj * xsizez + ii];
                 if (v < vmin)
@@ -852,8 +953,12 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
             }
         vlim = (vmin + 1.0) / 2.0;
 
-        for (ii = xsizez / 2 - brad * zfactor; ii < xsizez / 2 + brad * zfactor + 1; ii++)
-            for (jj = ysizez / 2 - brad * zfactor; jj < ysizez / 2 + brad * zfactor + 1; jj++)
+        for (ii = xsizez / 2 - brad * zfactor;
+             ii < xsizez / 2 + brad * zfactor + 1;
+             ii++)
+            for (jj = ysizez / 2 - brad * zfactor;
+                 jj < ysizez / 2 + brad * zfactor + 1;
+                 jj++)
             {
                 data.image[IDcorrz].array.F[jj * xsizez + ii] -= vlim;
                 data.image[IDcorrz].array.F[jj * xsizez + ii] /= (1.0 - vlim);
@@ -862,14 +967,19 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
                 {
                     data.image[IDcorrz].array.F[jj * xsizez + ii] = 0.0;
                 }
-                data.image[IDcorrz].array.F[jj * xsizez + ii] = pow(data.image[IDcorrz].array.F[jj * xsizez + ii], 2.0);
+                data.image[IDcorrz].array.F[jj * xsizez + ii] =
+                    pow(data.image[IDcorrz].array.F[jj * xsizez + ii], 2.0);
             }
 
         totx = 0.0;
         toty = 0.0;
-        tot = 0.0;
-        for (ii = xsizez / 2 - brad * zfactor; ii < xsizez / 2 + brad * zfactor + 1; ii++)
-            for (jj = ysizez / 2 - brad * zfactor; jj < ysizez / 2 + brad * zfactor + 1; jj++)
+        tot  = 0.0;
+        for (ii = xsizez / 2 - brad * zfactor;
+             ii < xsizez / 2 + brad * zfactor + 1;
+             ii++)
+            for (jj = ysizez / 2 - brad * zfactor;
+                 jj < ysizez / 2 + brad * zfactor + 1;
+                 jj++)
             {
                 v = data.image[IDcorrz].array.F[jj * xsizez + ii];
 
@@ -890,13 +1000,19 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
 
         printf("translating %s\n", IDin_name);
         create_2Dimage_ID("tinim", xsize, ysize, &IDtin);
-        memcpy(data.image[IDtin].array.F, data.image[IDin].array.F, sizeof(float) * xsize * ysize);
+        memcpy(data.image[IDtin].array.F,
+               data.image[IDin].array.F,
+               sizeof(float) * xsize * ysize);
         fft_image_translate("tinim", "_translout", -centx, -centy);
         delete_image_ID("tinim", DELETE_IMAGE_ERRMODE_WARNING);
         IDtout = image_ID("_translout");
         //save_fits("_translout","_translout.fits");
 
-        printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n", brad * zfactor, vmin, centx, centy);
+        printf("zsize = %ld   vmin = %10f   offset = %+8.3f %+8.3f\n",
+               brad * zfactor,
+               vmin,
+               centx,
+               centy);
 
         if (mode == 0)
         {
@@ -908,7 +1024,8 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
             for (ii = 0; ii < xsize; ii++)
                 for (jj = 0; jj < ysize; jj++)
                 {
-                    data.image[IDout].array.F[jj * xsize + ii] = data.image[IDtout].array.F[jj * xsize + ii];
+                    data.image[IDout].array.F[jj * xsize + ii] =
+                        data.image[IDtout].array.F[jj * xsize + ii];
                 }
             data.image[IDout].md[0].write = 0;
             data.image[IDout].md[0].cnt0++;
@@ -935,32 +1052,32 @@ imageID IMG_REDUCE_centernormim(const char *IDin_name, const char *IDref_name, c
 errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
 {
     imageID IDin;
-    long xsize, ysize, zsize;
-    long xysize;
-    long ii, jj, kk;
+    long    xsize, ysize, zsize;
+    long    xysize;
+    long    ii, jj, kk;
 
     imageID IDdark;
-    long zsized;
-    long kk1;
+    long    zsized;
+    long    kk1;
 
     double *xcent;
     double *ycent;
-    double xtot, ytot, tot;
-    double boxrad;
-    double v;
-    long xmin, xmax, ymin, ymax;
+    double  xtot, ytot, tot;
+    double  boxrad;
+    double  v;
+    long    xmin, xmax, ymin, ymax;
 
-    long xsize1, ysize1, xysize1; // crop size
+    long    xsize1, ysize1, xysize1; // crop size
     imageID ID1, ID2;
-    long ii1, jj1;
+    long    ii1, jj1;
     imageID IDt1, IDt2;
 
     double x, y, r;
-    long ID;
+    long   ID;
 
-    long kk2;
-    long kk1min, kk2min;
-    double vmin;
+    long    kk2;
+    long    kk1min, kk2min;
+    double  vmin;
     imageID IDdiff;
 
     IDin = image_ID(IDin_name);
@@ -984,7 +1101,8 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
         {
             for (ii = 0; ii < xysize; ii++)
             {
-                data.image[IDin].array.F[kk * xysize + ii] -= data.image[IDdark].array.F[kk1 * xysize + ii];
+                data.image[IDin].array.F[kk * xysize + ii] -=
+                    data.image[IDdark].array.F[kk1 * xysize + ii];
             }
             kk1++;
             if (kk1 == zsized)
@@ -1007,14 +1125,14 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
     }
 
     /// compute photocenter
-    xcent = (double *)malloc(sizeof(double) * zsize);
+    xcent = (double *) malloc(sizeof(double) * zsize);
     if (xcent == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
         abort();
     }
 
-    ycent = (double *)malloc(sizeof(double) * zsize);
+    ycent = (double *) malloc(sizeof(double) * zsize);
     if (ycent == NULL)
     {
         PRINT_ERROR("malloc returns NULL pointer");
@@ -1025,18 +1143,18 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
     {
         xtot = 0.0;
         ytot = 0.0;
-        tot = 0.0;
+        tot  = 0.0;
 
         xcent[kk] = 0.5 * xsize;
         ycent[kk] = 0.5 * ysize;
 
         boxrad = 50.0;
 
-        xmin = (long)(xcent[kk] - boxrad);
-        xmax = (long)(xcent[kk] + boxrad);
+        xmin = (long) (xcent[kk] - boxrad);
+        xmax = (long) (xcent[kk] + boxrad);
 
-        ymin = (long)(ycent[kk] - boxrad);
-        ymax = (long)(ycent[kk] + boxrad);
+        ymin = (long) (ycent[kk] - boxrad);
+        ymax = (long) (ycent[kk] + boxrad);
 
         if (xmin < 0)
         {
@@ -1074,8 +1192,8 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
         fflush(stdout);
     }
 
-    xsize1 = 128;
-    ysize1 = 128;
+    xsize1  = 128;
+    ysize1  = 128;
     xysize1 = xsize1 * ysize1;
 
     create_3Dimage_ID("cropPSF", xsize1, ysize1, zsize, &ID1);
@@ -1086,8 +1204,8 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
         {
             for (jj1 = 0; jj1 < xsize1; jj1++)
             {
-                ii = ii1 - xsize1 / 2 + (long)(xcent[kk] + 0.5);
-                jj = jj1 - ysize1 / 2 + (long)(ycent[kk] + 0.5);
+                ii = ii1 - xsize1 / 2 + (long) (xcent[kk] + 0.5);
+                jj = jj1 - ysize1 / 2 + (long) (ycent[kk] + 0.5);
                 if ((ii > -1) && (ii < xsize) && (jj > -1) && (jj < ysize))
                 {
                     data.image[ID1].array.F[kk * xysize1 + jj1 * xsize1 + ii1] =
@@ -1103,14 +1221,14 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
     {
         xtot = 0.0;
         ytot = 0.0;
-        tot = 0.0;
+        tot  = 0.0;
 
         xcent[kk] = 0.5 * xsize;
         ycent[kk] = 0.5 * ysize;
 
         xtot = 0.0;
         ytot = 0.0;
-        tot = 0.0;
+        tot  = 0.0;
 
         for (ii1 = 0; ii1 < xsize1; ii1++)
             for (jj1 = 0; jj1 < ysize1; jj1++)
@@ -1126,12 +1244,16 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
 
         printf("%6ld   %12lf   %12lf\n", kk, xcent[kk], ycent[kk]);
 
-        fft_image_translate("translin", "translout", xcent[kk] - 0.5 * xsize1, ycent[kk] - 0.5 * ysize1);
+        fft_image_translate("translin",
+                            "translout",
+                            xcent[kk] - 0.5 * xsize1,
+                            ycent[kk] - 0.5 * ysize1);
         IDt2 = image_ID("translout");
 
         for (ii = 0; ii < xysize1; ii++)
         {
-            data.image[ID1].array.F[kk * xysize1 + ii] = data.image[IDt2].array.F[ii];
+            data.image[ID1].array.F[kk * xysize1 + ii] =
+                data.image[IDt2].array.F[ii];
         }
 
         delete_image_ID("translout", DELETE_IMAGE_ERRMODE_WARNING);
@@ -1168,16 +1290,16 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
     IMG_REDUCE_correlMatrix("cropPSF", "corrmask", "cropPSF_corr");
     save_fits("cropPSF_corr", "cropPSF_corr.fits");
 
-    ID = image_ID("cropPSF_corr");
-    kk1 = 0;
-    kk2 = 500;
+    ID   = image_ID("cropPSF_corr");
+    kk1  = 0;
+    kk2  = 500;
     vmin = data.image[ID].array.F[kk2 * zsize + kk1] * 2.0;
     for (kk1 = 0; kk1 < zsize; kk1++)
         for (kk2 = kk1 + 100; kk2 < zsize; kk2++)
         {
             if (data.image[ID].array.F[kk2 * zsize + kk1] < vmin)
             {
-                vmin = data.image[ID].array.F[kk2 * zsize + kk1];
+                vmin   = data.image[ID].array.F[kk2 * zsize + kk1];
                 kk1min = kk1;
                 kk2min = kk2;
             }
@@ -1194,10 +1316,13 @@ errno_t IMG_REDUCE_cubeprocess(const char *IDin_name)
 
     for (ii = 0; ii < xysize1; ii++)
     {
-        data.image[ID1].array.F[ii] = data.image[ID].array.F[kk1min * xysize1 + ii];
-        data.image[ID2].array.F[ii] = data.image[ID].array.F[kk2min * xysize1 + ii];
+        data.image[ID1].array.F[ii] =
+            data.image[ID].array.F[kk1min * xysize1 + ii];
+        data.image[ID2].array.F[ii] =
+            data.image[ID].array.F[kk2min * xysize1 + ii];
         data.image[IDdiff].array.F[ii] =
-            data.image[ID].array.F[kk1min * xysize1 + ii] - data.image[ID].array.F[kk2min * xysize1 + ii];
+            data.image[ID].array.F[kk1min * xysize1 + ii] -
+            data.image[ID].array.F[kk2min * xysize1 + ii];
     }
 
     save_fits("imp1", "imp1.fits");
